@@ -23,7 +23,6 @@ class GrayScaleObservation(gym.ObservationWrapper):
         observation = transform(observation)
         return observation
     
-
 class ResizeObservation(gym.ObservationWrapper):
     def __init__(self, env, shape):
         super().__init__(env)
