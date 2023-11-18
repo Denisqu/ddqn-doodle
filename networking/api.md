@@ -1,8 +1,16 @@
 
 **make**
+
+
 ``` json
+--->
 {
     "f": "make"
+}
+<---
+{
+    "f": "make",
+    "status": true
 }
 ```
 
@@ -10,8 +18,14 @@
 
 **reset**
 ``` json
+--->
 {
     "f": "reset"
+}
+<---
+{
+    "f": "reset",
+    "status": true
 }
 ```
 
