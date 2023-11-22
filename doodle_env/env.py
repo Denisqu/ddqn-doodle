@@ -21,10 +21,7 @@ class DoodleEnv(gym.Env):
     def reset(self, seed=None, options=None):
         # We need the following line to seed self.np_random
         super().reset(seed=seed)
-        
         obs_tensor = self.ml_client.reset_send_receive()
-        print(f"obs_tensor = {obs_tensor}, it's shape = {obs_tensor.shape}")
-
         return obs_tensor
     
     def step(self, action):

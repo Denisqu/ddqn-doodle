@@ -34,22 +34,28 @@ if __name__ == '__main__':
     episodes = 40000
     for e in range(episodes):
         state = env.reset()
+        step_num_in_episode = 0
+        previous_reward = 0
         # Play the game!
         while True:
 
+            step_num_in_episode += 1
             # Run agent on the state
             action = doodle_agent.act(state)
-            print(f"action =  {action}")
+            
             
             # Agent performs action
             next_state, reward, done, info = env.step(action)
-            #env.render()
+            temp = reward
+            reward = reward - previous_reward
+            previous_reward = temp
 
             # Remember
             doodle_agent.cache(state, next_state, action, reward, done)
 
             # Learn
             q, loss = doodle_agent.learn()
+            print(f"action = {action}, reward = {reward}, q = {q}, loss = {loss}, step_num_in_episode = {step_num_in_episode}")
 
             # Logging
             logger.log_step(reward, loss, q)
@@ -58,7 +64,7 @@ if __name__ == '__main__':
             state = next_state
 
             # Check if end of game
-            if done:
+            if done or step_num_in_episode > 60 * 60:
                 break
         
         
