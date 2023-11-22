@@ -10,11 +10,13 @@ def get_tuned_env():
     #if gym.__version__ < '0.26':
     #    env = gym_super_mario_bros.make("SuperMarioBros-1-1-v0", new_step_api=True)
     #else:
-    env = gym_super_mario_bros.make("SuperMarioBros-1-1-v2")
+    env = gym_super_mario_bros.make("doodle-env")
+    
     env = c_w.SkipFrame(env, skip=4)
     env = o_w.GrayScaleObservation(env)
+    
+     
     env = o_w.ResizeObservation(env, shape=84)
-    env = JoypadSpace(env, SIMPLE_MOVEMENT)
     
     """FrameStack is a wrapper that allows us to squash
     consecutive frames of the environment into a

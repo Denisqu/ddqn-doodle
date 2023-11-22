@@ -4,6 +4,7 @@ import core.agent as agent
 from pathlib import Path
 import torch
 import random, datetime, os, copy
+import doodle_env.env
 
 
 if __name__ == '__main__':
@@ -16,11 +17,13 @@ if __name__ == '__main__':
     save_dir = Path("checkpoints") / datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
     save_dir.mkdir(parents=True)
 
-    mario = agent.Mario(state_dim=(4, 84, 84), action_dim=env.action_space.n, save_dir=save_dir)
+    doodle_agent = agent.Mario(state_dim=(4, 84, 84), action_dim=env.action_space.n, save_dir=save_dir)
+
+    
 
     if os.path.exists(f'{checkpoint_file_rel_path}'):
          checkpoint = torch.load(checkpoint_file_rel_path)
-         mario.net.load_state_dict(checkpoint['model'])
+         doodle_agent.net.load_state_dict(checkpoint['model'])
          #mario.exploration_rate = checkpoint['exploration_rate'] - 0.39
          #mario.curr_step = checkpoint["curr_step"]
     else:
@@ -35,17 +38,18 @@ if __name__ == '__main__':
         while True:
 
             # Run agent on the state
-            action = mario.act(state)
+            action = doodle_agent.act(state)
+            print(f"action =  {action}")
             
             # Agent performs action
             next_state, reward, done, info = env.step(action)
-            env.render()
+            #env.render()
 
             # Remember
-            mario.cache(state, next_state, action, reward, done)
+            doodle_agent.cache(state, next_state, action, reward, done)
 
             # Learn
-            q, loss = mario.learn()
+            q, loss = doodle_agent.learn()
 
             # Logging
             logger.log_step(reward, loss, q)
@@ -54,15 +58,15 @@ if __name__ == '__main__':
             state = next_state
 
             # Check if end of game
-            if done or info["flag_get"]:
+            if done:
                 break
         
         
         logger.log_episode()
         if e % 2 == 0:
-            logger.record(episode=e, epsilon=mario.exploration_rate, step=mario.curr_step)
+            logger.record(episode=e, epsilon=doodle_agent.exploration_rate, step=doodle_agent.curr_step)
         if e % 10 == 0:
-            mario.save()
+            doodle_agent.save()
             
         
 

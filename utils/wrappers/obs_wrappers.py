@@ -13,15 +13,17 @@ class GrayScaleObservation(gym.ObservationWrapper):
 
     def permute_orientation(self, observation):
         # permute [H, W, C] array to [C, H, W] tensor
-        observation = np.transpose(observation, (2, 0, 1))
-        observation = torch.tensor(observation.copy(), dtype=torch.float)
-        return observation
+        print(f"obs0 = {observation}")
+        print(f"obs0 shape = {observation.shape}")
+        observation_new = np.transpose(observation, (2, 0, 1))
+        observation_new = torch.tensor(observation_new.copy(), dtype=torch.float)
+        return observation_new
 
     def observation(self, observation):
-        observation = self.permute_orientation(observation)
+        observation_new = self.permute_orientation(observation)
         transform = T.Grayscale()
-        observation = transform(observation)
-        return observation
+        observation_new = transform(observation_new)
+        return observation_new
     
 class ResizeObservation(gym.ObservationWrapper):
     def __init__(self, env, shape):
