@@ -17,7 +17,7 @@ for i in range(100000):
     val_0 = ws.recv()
 
     val = json.loads(val_0)["base64-frame"]
-    print(val)
+    print(val_0)
     #my_str_as_bytes = str.encode(val)
     img = Image.open(io.BytesIO(base64.decodebytes(bytes(val, "utf-8"))))
     img.save('my-image.png')
