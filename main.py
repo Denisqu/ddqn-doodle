@@ -11,7 +11,7 @@ if __name__ == '__main__':
     env = env_tuner.get_tuned_env()
     
     use_cuda = torch.cuda.is_available()
-    checkpoint_file_rel_path = "C:/git repos/python-projects/ddqn-mario-bros/checkpoints/2023-10-14T21-18-14/mario_net_3.chkpt"
+    checkpoint_file_rel_path = "C:\git-repos\python-projects\ddqn-doodle\checkpoints\2023-11-24T18-59-18\mario_net_0.chkpt"
     print(f"Using CUDA: {use_cuda}")
 
     save_dir = Path("checkpoints") / datetime.datetime.now().strftime("%Y-%m-%dT%H-%M-%S")
@@ -58,7 +58,7 @@ if __name__ == '__main__':
             # Learn
             q, loss = doodle_agent.learn()
             #print(f"current_reward={current_reward}, prev_reward={previous_reward_cache}, reward={reward}, done={done}, step_in_episode={step_num_in_episode}")
-            print(f"r={reward} done={done} step={step_num_in_episode}")
+            print(f"e={e}, q={q}, loss={loss}, r={reward}, done={done}, step={step_num_in_episode}")
 
             # Logging
             logger.log_step(reward, loss, q)
@@ -67,7 +67,7 @@ if __name__ == '__main__':
             state = next_state
 
             # Check if end of game
-            if done or step_num_in_episode > 60 * 60:
+            if done:
                 break
         
         

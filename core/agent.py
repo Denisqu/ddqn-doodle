@@ -17,7 +17,7 @@ class Mario:
         self.net = MarioNet(self.state_dim, self.action_dim).float()
         self.net = self.net.to(device=self.device)
 
-        self.exploration_rate = 0.5
+        self.exploration_rate = 0.1
         self.exploration_rate_decay = 0.99999975
         self.exploration_rate_min = 0.1 - 0.099
         self.curr_step = 0
